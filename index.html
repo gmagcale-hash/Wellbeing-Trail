@@ -427,6 +427,1803 @@
                     <i class="fa-solid fa-code"></i> Raw Config
                 </button>
                 <button id="admin-tab-btn-7" onclick="switchAdminTab(7)" class="px-3 py-1.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 whitespace-nowrap"><i class="fa-solid fa-cloud"></i> Team Sync</button>
+                <button id="admin-tab-btn-8" onclick="switchAdminTab(8)" class="px-3 py-1.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 whitespace-nowrap"><i class="fa-solid fa-trophy"></i> Gamification</button>
+            </div>
+
+            <!-- TAB 1: TEAM REPORTS & CSV LOGS -->
+            <div id="admin-tab-1" class="admin-tab-pane flex flex-col gap-3 flex-1 overflow-hidden">
+                <div class="flex justify-between items-center">
+                    <h4 class="text-sm font-extrabold text-slate-700">Team Activity History</h4>
+                    <div class="flex gap-2">
+                        <button onclick="clearAllLogs()" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs rounded-lg border border-rose-200 transition">Clear All</button>
+                        <button onclick="exportToCSV()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-lg shadow-sm transition flex items-center gap-1.5"><i class="fa-solid fa-download"></i> Export CSV</button>
+                    </div>
+                </div>
+
+                <div class="border border-slate-200 rounded-2xl overflow-y-auto max-h-[300px]">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase">
+                            <tr>
+                                <th class="p-2.5">Time</th>
+                                <th class="p-2.5">Player</th>
+                                <th class="p-2.5">Mission</th>
+                                <th class="p-2.5 text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-table-logs-body" class="divide-y divide-slate-100">
+                            <!-- Dynamic Table Rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TAB 2: THEME & COLOR PICKERS -->
+            <div id="admin-tab-2" class="admin-tab-pane hidden flex-col gap-4 flex-1 overflow-y-auto pr-1">
+                <div class="flex justify-between items-center">
+                    <h4 class="text-sm font-extrabold text-slate-700">Custom UI Theme & Color Pickers</h4>
+                    <button onclick="resetDefaultColors()" class="px-3 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs rounded-lg border border-slate-300">Reset Colors</button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 flex items-center justify-between">
+                        <div>
+                            <strong class="text-xs text-slate-800">Header Gradient Start</strong>
+                            <p class="text-[10px] text-slate-500">Top navigation bar start color</p>
+                        </div>
+                        <input type="color" id="picker-header-start" value="#0f766e" onchange="previewColors()" class="w-10 h-10 rounded-xl cursor-pointer border border-slate-300">
+                    </div>
+
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 flex items-center justify-between">
+                        <div>
+                            <strong class="text-xs text-slate-800">Header Gradient End</strong>
+                            <p class="text-[10px] text-slate-500">Top navigation bar end color</p>
+                        </div>
+                        <input type="color" id="picker-header-end" value="#047857" onchange="previewColors()" class="w-10 h-10 rounded-xl cursor-pointer border border-slate-300">
+                    </div>
+
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 flex items-center justify-between">
+                        <div>
+                            <strong class="text-xs text-slate-800">Board Background</strong>
+                            <p class="text-[10px] text-slate-500">Main board perimeter frame color</p>
+                        </div>
+                        <input type="color" id="picker-board-bg" value="#e2e8f0" onchange="previewColors()" class="w-10 h-10 rounded-xl cursor-pointer border border-slate-300">
+                    </div>
+
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 flex items-center justify-between">
+                        <div>
+                            <strong class="text-xs text-slate-800">Tile Card Background</strong>
+                            <p class="text-[10px] text-slate-500">Background color for the 16 board tiles</p>
+                        </div>
+                        <input type="color" id="picker-tile-bg" value="#ffffff" onchange="previewColors()" class="w-10 h-10 rounded-xl cursor-pointer border border-slate-300">
+                    </div>
+
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 flex items-center justify-between">
+                        <div>
+                            <strong class="text-xs text-slate-800">Tile Text Color</strong>
+                            <p class="text-[10px] text-slate-500">Text color inside board tiles</p>
+                        </div>
+                        <input type="color" id="picker-tile-text" value="#1e293b" onchange="previewColors()" class="w-10 h-10 rounded-xl cursor-pointer border border-slate-300">
+                    </div>
+
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 flex items-center justify-between">
+                        <div>
+                            <strong class="text-xs text-slate-800">Accent Buttons</strong>
+                            <p class="text-[10px] text-slate-500">Primary action button colors</p>
+                        </div>
+                        <input type="color" id="picker-accent-btn" value="#059669" onchange="previewColors()" class="w-10 h-10 rounded-xl cursor-pointer border border-slate-300">
+                    </div>
+
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 flex items-center justify-between">
+                        <div>
+                            <strong class="text-xs text-slate-800">Page Background</strong>
+                            <p class="text-[10px] text-slate-500">Overall app background</p>
+                        </div>
+                        <input type="color" id="picker-page-bg" value="#f1f5f9" onchange="previewColors()" class="w-10 h-10 rounded-xl cursor-pointer border border-slate-300">
+                    </div>
+
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 flex items-center justify-between">
+                        <div>
+                            <strong class="text-xs text-slate-800">Tile Accent</strong>
+                            <p class="text-[10px] text-slate-500">Icon/accent colour on board tiles</p>
+                        </div>
+                        <input type="color" id="picker-tile-accent" value="#047857" onchange="previewColors()" class="w-10 h-10 rounded-xl cursor-pointer border border-slate-300">
+                    </div>
+
+                    <div class="pt-2 border-t border-slate-200">
+                        <h5 class="text-xs font-extrabold text-slate-700 mb-2">More UI Colours</h5>
+                        <div class="grid grid-cols-2 gap-2">
+                            <label class="text-[10px] font-bold text-slate-600">Panel <input type="color" id="picker-panel-bg" value="#ffffff" onchange="previewColors()" class="w-full h-8 rounded-lg cursor-pointer"></label>
+                            <label class="text-[10px] font-bold text-slate-600">Soft Panel <input type="color" id="picker-panel-soft" value="#f8fafc" onchange="previewColors()" class="w-full h-8 rounded-lg cursor-pointer"></label>
+                            <label class="text-[10px] font-bold text-slate-600">Border <input type="color" id="picker-border" value="#e2e8f0" onchange="previewColors()" class="w-full h-8 rounded-lg cursor-pointer"></label>
+                            <label class="text-[10px] font-bold text-slate-600">Muted Text <input type="color" id="picker-muted" value="#64748b" onchange="previewColors()" class="w-full h-8 rounded-lg cursor-pointer"></label>
+                            <label class="text-[10px] font-bold text-slate-600">Success <input type="color" id="picker-success" value="#059669" onchange="previewColors()" class="w-full h-8 rounded-lg cursor-pointer"></label>
+                            <label class="text-[10px] font-bold text-slate-600">Warning <input type="color" id="picker-warning" value="#d97706" onchange="previewColors()" class="w-full h-8 rounded-lg cursor-pointer"></label>
+                            <label class="text-[10px] font-bold text-slate-600">Danger <input type="color" id="picker-danger" value="#e11d48" onchange="previewColors()" class="w-full h-8 rounded-lg cursor-pointer"></label>
+                            <label class="text-[10px] font-bold text-slate-600">Center Hub <input type="color" id="picker-center" value="#f8fafc" onchange="previewColors()" class="w-full h-8 rounded-lg cursor-pointer"></label>
+                            <label class="text-[10px] font-bold text-slate-600">Input Background <input type="color" id="picker-input" value="#ffffff" onchange="previewColors()" class="w-full h-8 rounded-lg cursor-pointer"></label>
+                            <label class="text-[10px] font-bold text-slate-600">Modal Overlay <input type="color" id="picker-overlay" value="#0f172a" onchange="previewColors()" class="w-full h-8 rounded-lg cursor-pointer"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: USER ROLLS OVERRIDE -->
+            <div id="admin-tab-3" class="admin-tab-pane hidden flex-col gap-4">
+                <h4 class="text-sm font-extrabold text-slate-700">Grant Extra Rolls to Users</h4>
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex flex-col gap-3">
+                    <p class="text-xs text-slate-600">Select active player to adjust daily rolls count:</p>
+                    <div class="flex gap-2 items-center">
+                        <select id="admin-roll-user-select" class="flex-1 p-2 bg-white border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none">
+                            <option value="current">Current Player</option>
+                        </select>
+                        <button onclick="grantRolls(1)" class="px-3 py-2 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs rounded-xl shadow-sm transition">+1 Roll</button>
+                        <button onclick="grantRolls(2)" class="px-3 py-2 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs rounded-xl shadow-sm transition">+2 Rolls</button>
+                        <button onclick="grantRolls(3)" class="px-3 py-2 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs rounded-xl shadow-sm transition">+3 Rolls</button>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center bg-amber-50 border border-amber-200 rounded-2xl p-4">
+                    <div>
+                        <strong class="text-xs text-amber-900 font-extrabold">Reset Daily Rolls</strong>
+                        <p class="text-[11px] text-amber-700">Reset daily roll counter back to 3/3 immediately.</p>
+                    </div>
+                    <button onclick="forceGlobalReset()" class="px-3 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs rounded-xl shadow-sm transition">Reset Limit</button>
+                </div>
+            </div>
+
+            <!-- TAB 4: BOARD TILE EDITOR & IMAGE UPLOAD -->
+            <div id="admin-tab-4" class="admin-tab-pane hidden flex-col gap-3 flex-1 overflow-hidden">
+                <h4 class="text-sm font-extrabold text-slate-700">Edit 16 Perimeter Board Tiles & Upload Custom Images</h4>
+                <div id="admin-tiles-editor-list" class="flex flex-col gap-3 overflow-y-auto max-h-[320px] pr-1">
+                    <!-- Dynamic Tile Inputs -->
+                </div>
+            </div>
+
+            <!-- TAB 5: RESOURCES MANAGER -->
+            <div id="admin-tab-5" class="admin-tab-pane hidden flex-col gap-3 flex-1 overflow-hidden">
+                <div class="flex justify-between items-center">
+                    <h4 class="text-sm font-extrabold text-slate-700">Resources Hub Content</h4>
+                    <button onclick="addNewResourceCard()" class="px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs rounded-lg shadow-sm transition">+ Add Resource</button>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="text-[11px] font-bold text-slate-600">Hub Title</label>
+                        <input type="text" id="admin-res-title" class="w-full p-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold">
+                    </div>
+                    <div>
+                        <label class="text-[11px] font-bold text-slate-600">Hub Subtitle</label>
+                        <input type="text" id="admin-res-subtitle" class="w-full p-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold">
+                    </div>
+                </div>
+
+                <div id="admin-res-editor-list" class="flex flex-col gap-3 overflow-y-auto max-h-[220px] pr-1 mt-2">
+                    <!-- Dynamic Resource Inputs -->
+                </div>
+            </div>
+
+            <!-- TAB 6: RAW CONFIG JSON -->
+            <div id="admin-tab-6" class="admin-tab-pane hidden flex-col gap-2 flex-1">
+                <h4 class="text-sm font-extrabold text-slate-700">Raw JSON Config Editor</h4>
+                <p class="text-xs text-slate-500">Copy or paste JSON configuration to back up or restore game setups.</p>
+                <textarea id="admin-raw-json" class="w-full h-48 p-3 bg-slate-900 text-emerald-400 font-mono text-xs rounded-xl focus:outline-none"></textarea>
+            </div>
+
+            <div id="admin-tab-7" class="admin-tab-pane hidden flex-col gap-3 flex-1 overflow-y-auto pr-1">
+                <h4 class="text-sm font-extrabold text-slate-700">Firebase Team Leaderboard & Shared Sync</h4>
+                <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-xs text-amber-900">
+                    <strong>Firebase setup:</strong> create a Firebase Web App, enable <b>Anonymous Authentication</b>, and create <b>Cloud Firestore</b>. Then paste the Web App configuration JSON below. The game uses Firestore for the shared leaderboard <b>and profile photos</b>, so you do not need Firebase Storage.
+                </div>
+                <label class="text-[11px] font-bold text-slate-600">Firebase Web App Config JSON
+                    <textarea id="firebase-config" class="w-full mt-1 p-2 bg-white border border-slate-300 rounded-xl text-[10px] font-mono h-36" placeholder='{"apiKey":"...","authDomain":"...","projectId":"...","storageBucket":"...","messagingSenderId":"...","appId":"..."}'></textarea>
+                </label>
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="testFirebaseConnection()" class="px-3 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs rounded-xl"><i class="fa-solid fa-plug"></i> Test Firebase</button>
+                    <button onclick="syncExistingLogs()" class="px-3 py-2 bg-slate-700 hover:bg-slate-800 text-white font-bold text-xs rounded-xl"><i class="fa-solid fa-cloud-arrow-up"></i> Upload Local Logs</button>
+                    <button onclick="clearFirebaseConfig()" class="px-3 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl">Clear Config</button>
+                </div>
+                <div id="firebase-status" class="text-[10px] custom-muted"></div>
+                <details class="bg-slate-50 border border-slate-200 rounded-2xl p-3">
+                    <summary class="text-xs font-extrabold cursor-pointer">Firestore security rules</summary>
+                    <pre class="mt-2 whitespace-pre-wrap text-[10px] text-slate-600">rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /wellbeing_logs/{logId} {
+      allow read, create: if request.auth != null;
+      allow update, delete: if request.auth != null;
+    }
+    match /players/{userId} {
+      allow read: if request.auth != null;
+      allow create, update: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}</pre>
+                </details>
+                <details class="bg-slate-50 border border-slate-200 rounded-2xl p-3">
+                    <summary class="text-xs font-extrabold cursor-pointer">Why no Firebase Storage?</summary>
+                    <p class="mt-2 text-[10px] text-slate-600">Profile pictures are resized before saving and stored in each player's Firestore document. This keeps the setup on Firebase's no-cost Spark plan and avoids requiring a billing account for Cloud Storage.</p>
+                </details>
+            </div>
+
+            <!-- TAB 8: GAMIFICATION -->
+            <div id="admin-tab-8" class="admin-tab-pane hidden flex-col gap-4 flex-1 overflow-y-auto pr-1">
+                <div class="flex justify-between items-center">
+                    <div><h4 class="text-sm font-extrabold text-slate-700">Gamification & Leaderboard Controls</h4><p class="text-[10px] text-slate-500">Control points, badges, streaks and the team leaderboard without editing code.</p></div>
+                    <button onclick="resetGamificationDefaults()" class="px-3 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs rounded-lg border border-slate-300">Reset</button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3">
+                        <label class="text-[10px] font-bold text-slate-600">Leaderboard title</label>
+                        <input id="game-leaderboard-title" class="w-full mt-1 p-2 bg-white border border-slate-300 rounded-lg text-xs font-bold" placeholder="Team Leaderboard">
+                        <label class="text-[10px] font-bold text-slate-600 block mt-2">Subtitle</label>
+                        <input id="game-leaderboard-subtitle" class="w-full mt-1 p-2 bg-white border border-slate-300 rounded-lg text-xs" placeholder="Celebrate progress...">
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3">
+                        <label class="text-[10px] font-bold text-slate-600">Default points per challenge</label>
+                        <input id="game-default-points" type="number" min="0" max="1000" class="w-full mt-1 p-2 bg-white border border-slate-300 rounded-lg text-xs font-bold">
+                        <div class="grid grid-cols-2 gap-2 mt-2 text-[10px]">
+                            <label class="flex items-center gap-2"><input id="game-streaks" type="checkbox"> Enable streaks</label>
+                            <label class="flex items-center gap-2"><input id="game-badges" type="checkbox"> Enable badges</label>
+                            <label class="flex items-center gap-2"><input id="game-podium" type="checkbox"> Show podium</label>
+                            <label class="flex items-center gap-2"><input id="game-recent" type="checkbox"> Recent activity</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3">
+                    <h5 class="text-xs font-extrabold text-slate-700 mb-2">Podium & badge colours</h5>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                        <label class="text-[10px] font-bold text-slate-600">Gold<input type="color" id="game-gold" class="w-full h-9 mt-1 rounded-lg"></label>
+                        <label class="text-[10px] font-bold text-slate-600">Silver<input type="color" id="game-silver" class="w-full h-9 mt-1 rounded-lg"></label>
+                        <label class="text-[10px] font-bold text-slate-600">Bronze<input type="color" id="game-bronze" class="w-full h-9 mt-1 rounded-lg"></label>
+                        <label class="text-[10px] font-bold text-slate-600">Badge<input type="color" id="game-badge" class="w-full h-9 mt-1 rounded-lg"></label>
+                    </div>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3">
+                    <div class="flex justify-between items-center mb-2"><h5 class="text-xs font-extrabold text-slate-700">Achievement badges</h5><button onclick="addGamificationBadge()" class="px-2 py-1 bg-white border border-slate-300 rounded-lg text-[10px] font-bold">+ Add badge</button></div>
+                    <div id="admin-badges-editor" class="flex flex-col gap-2"></div>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3">
+                    <h5 class="text-xs font-extrabold text-slate-700 mb-2">Challenge points</h5>
+                    <p class="text-[10px] text-slate-500 mb-2">Set a different point value for individual board challenges. Blank uses the default points above.</p>
+                    <div id="admin-points-editor" class="grid grid-cols-1 md:grid-cols-2 gap-2"></div>
+                </div>
+            </div>
+
+            <div class="pt-3 border-t border-slate-100 flex justify-end gap-2">
+                <button onclick="closeAdminPortal()" class="py-2.5 px-4 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold rounded-xl text-xs transition">Cancel</button>
+                <button onclick="saveAdminSettings()" class="py-2.5 px-5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow-md transition">Save & Apply Changes</button>
+            </div>
+
+        </div>
+    </div>
+
+    <script type="module">
+        const FIREBASE_VERSION = '12.19.0';
+        window.firebaseBridgeReady = (async () => {
+            const [{ initializeApp }, { getFirestore, collection, addDoc, getDocs, query, orderBy, limit, serverTimestamp, setDoc, doc, getDoc }, { getAuth, signInAnonymously }] = await Promise.all([
+                import(`https://www.gstatic.com/firebasejs/${FIREBASE_VERSION}/firebase-app.js`),
+                import(`https://www.gstatic.com/firebasejs/${FIREBASE_VERSION}/firebase-firestore.js`),
+                import(`https://www.gstatic.com/firebasejs/${FIREBASE_VERSION}/firebase-auth.js`)
+            ]);
+            let app = null, db = null, auth = null, currentConfigKey = '';
+            async function init(config) {
+                const key = JSON.stringify(config);
+                if (app && currentConfigKey === key) return;
+                app = initializeApp(config, 'wellbeing-game-' + Math.random().toString(36).slice(2, 8));
+                db = getFirestore(app);
+                auth = getAuth(app);
+                currentConfigKey = key;
+            }
+            async function ensureAuth() {
+                if (!auth.currentUser) await signInAnonymously(auth);
+                return auth.currentUser;
+            }
+            async function getUserId() {
+                const user = await ensureAuth();
+                return user.uid;
+            }
+            async function upsertPlayer(data) {
+                const uid = await getUserId();
+                await setDoc(doc(db, 'players', uid), {
+                    player: data.player || 'Coworker',
+                    profileImage: data.profileImage || '',
+                    updatedAt: serverTimestamp()
+                }, { merge: true });
+                return uid;
+            }
+            async function addLog(data) {
+                const uid = await getUserId();
+                return addDoc(collection(db, 'wellbeing_logs'), { ...data, playerId: uid, createdAt: serverTimestamp() });
+            }
+            async function getLogs(max = 500) {
+                await ensureAuth();
+                const q = query(collection(db, 'wellbeing_logs'), orderBy('createdAt', 'desc'), limit(max));
+                const snap = await getDocs(q);
+                return snap.docs.map(d => ({ id: d.id, ...d.data(), created_at: d.data().createdAt?.toDate?.()?.toISOString?.() || d.data().completedAt || new Date().toISOString() }));
+            }
+            async function getPlayers() {
+                await ensureAuth();
+                const snap = await getDocs(collection(db, 'players'));
+                const result = {};
+                snap.docs.forEach(d => result[d.id] = { id: d.id, ...d.data() });
+                return result;
+            }
+            return { init, ensureAuth, getUserId, upsertPlayer, addLog, getLogs, getPlayers };
+        })();
+    </script>
+
+    <script>
+        // DEFAULT GAME BOARD DATA
+        const DEFAULT_TILES = [
+            { id: 0, title: "START", desc: "Welcome to the Wellbeing Trail! Take a deep breath and start your day.", category: "Home", icon: "fa-flag-checkered", img: "" },
+            { id: 1, title: "Hydration", desc: "Drink a full glass of water right now to stay hydrated and focused.", category: "Body", icon: "fa-glass-water", img: "" },
+            { id: 2, title: "Desk Stretch", desc: "Stand up and do a 30-second shoulder and desk stretch.", category: "Movement", icon: "fa-child-reaching", img: "" },
+            { id: 3, title: "Quiet Walk", desc: "Take a 2-minute stroll down the hallway or around your office.", category: "Break", icon: "fa-person-walking", img: "" },
+            { id: 4, title: "Workspace Tidy", desc: "Tidy up 3 items on your desk for a clearer mind.", category: "Mind", icon: "fa-broom", img: "" },
+            { id: 5, title: "Gratitude", desc: "Send a quick thank-you note or msg to a supportive teammate.", category: "Social", icon: "fa-heart", img: "" },
+            { id: 6, title: "Posture Check", desc: "Adjust your seat, uncross legs, and relax your shoulders.", category: "Body", icon: "fa-user-check", img: "" },
+            { id: 7, title: "20-20-20 Eye Rest", desc: "Look away from screens at an object 20 feet away for 20 seconds.", category: "Focus", icon: "fa-eye", img: "" },
+            { id: 8, title: "Healthy Snack", desc: "Grab a fruit, nuts, or a healthy refreshment break.", category: "Nutrition", icon: "fa-apple-whole", img: "" },
+            { id: 9, title: "Deep Breathing", desc: "Take 5 deep inhalations in through your nose and out through your mouth.", category: "Mind", icon: "fa-wind", img: "" },
+            { id: 10, title: "Coffee & Chat", desc: "Check in on a nearby coworker and say hello.", category: "Social", icon: "fa-mug-hot", img: "" },
+            { id: 11, title: "Mindful Pause", desc: "Close your eyes for 30 seconds and let your mind rest completely.", category: "Mind", icon: "fa-brain", img: "" },
+            { id: 12, title: "Sunshine Step", desc: "Look out a window or step outside for a quick dose of natural light.", category: "Refresh", icon: "fa-sun", img: "" },
+            { id: 13, title: "Kudos Praise", desc: "Give a quick genuine praise or shoutout to someone in your team.", category: "Social", icon: "fa-hands-clapping", img: "" },
+            { id: 14, title: "Jaw & Neck Release", desc: "Relax your jaw, roll your shoulders back, and stretch your neck.", category: "Body", icon: "fa-face-smile", img: "" },
+            { id: 15, title: "Wins Review", desc: "Acknowledge 1 thing you achieved so far this week!", category: "Focus", icon: "fa-trophy", img: "" }
+        ];
+
+        const DEFAULT_RESOURCES = [
+            { id: 1, title: "EAP Mental Health Support", desc: "Confidential 24/7 mental health and counseling support for employees.", link: "https://example.com/eap" },
+            { id: 2, title: "Ergonomics Desk Guide", desc: "Tips for setting up your chair, monitor, and desk safely.", link: "https://example.com/ergo" }
+        ];
+
+        const DEFAULT_THEME = {
+            headerStart: "#0f766e",
+            headerEnd: "#047857",
+            boardBg: "#e2e8f0",
+            tileBg: "#ffffff",
+            tileText: "#1e293b",
+            accentBtn: "#059669",
+            pageBg: "#f1f5f9",
+            tileAccent: "#047857",
+            mutedText: "#64748b",
+            panelBg: "#ffffff",
+            panelSoft: "#f8fafc",
+            borderColor: "#e2e8f0",
+            success: "#059669",
+            warning: "#d97706",
+            danger: "#e11d48",
+            overlay: "#0f172a",
+            centerBg: "#f8fafc",
+            inputBg: "#ffffff"
+        };
+
+        const DEFAULT_GAMIFICATION = {
+            leaderboardTitle: 'Team Leaderboard',
+            leaderboardSubtitle: 'Celebrate progress, streaks and completed wellbeing challenges.',
+            defaultPoints: 10,
+            streaksEnabled: true,
+            badgesEnabled: true,
+            podiumEnabled: true,
+            recentActivityEnabled: true,
+            podiumGold: '#f59e0b',
+            podiumSilver: '#94a3b8',
+            podiumBronze: '#b45309',
+            badgeColor: '#f59e0b',
+            badges: [
+                { name: 'Getting Started', icon: 'fa-seedling', threshold: 1, type: 'count' },
+                { name: 'High Five', icon: 'fa-hand', threshold: 5, type: 'count' },
+                { name: 'Challenge Pro', icon: 'fa-medal', threshold: 10, type: 'count' },
+                { name: 'Wellbeing Explorer', icon: 'fa-compass', threshold: 5, type: 'categories' },
+                { name: '7-day Streak', icon: 'fa-fire', threshold: 7, type: 'streak' },
+                { name: 'Wellbeing Champion', icon: 'fa-crown', threshold: 20, type: 'count' }
+            ]
+        };
+
+        // STATE VARIABLES
+        let boardTiles = [...DEFAULT_TILES];
+        let wellbeingResources = [...DEFAULT_RESOURCES];
+        let resHeader = { title: "Wellbeing Support Hub", subtitle: "Internal company contacts, guidance, and support resources." };
+        let themeColors = { ...DEFAULT_THEME };
+        let gamification = JSON.parse(JSON.stringify(DEFAULT_GAMIFICATION));
+        let currentPos = 0;
+        let rollsLeft = 3;
+        let activePlayer = "Coworker";
+        let profileImage = "";
+        let completedLogs = [];
+        let isMoving = false;
+        let adminPin = "1234";
+        let firebaseConfig = null;
+        let teamLogs = [];
+
+        window.onload = function() {
+            loadState();
+            applyThemeColors();
+            renderBoardGrid();
+            updatePawnPosition(currentPos);
+            updateUI();
+        };
+
+        function loadState() {
+            try {
+                const today = new Date().toISOString().split('T')[0];
+                const savedDate = localStorage.getItem('ow_date');
+
+                if (savedDate === today) {
+                    rollsLeft = parseInt(localStorage.getItem('ow_rolls') || '3', 10);
+                } else {
+                    rollsLeft = 3;
+                    localStorage.setItem('ow_date', today);
+                    localStorage.setItem('ow_rolls', '3');
+                }
+
+                currentPos = parseInt(localStorage.getItem('ow_pos') || '0', 10);
+                activePlayer = localStorage.getItem('ow_user') || 'Coworker';
+                profileImage = localStorage.getItem('ow_profile_image') || '';
+                completedLogs = JSON.parse(localStorage.getItem('ow_logs') || '[]');
+
+                const tilesData = localStorage.getItem('ow_tiles');
+                if (tilesData) boardTiles = JSON.parse(tilesData);
+
+                const resData = localStorage.getItem('ow_res');
+                if (resData) wellbeingResources = JSON.parse(resData);
+
+                const resHeadData = localStorage.getItem('ow_res_head');
+                if (resHeadData) resHeader = JSON.parse(resHeadData);
+
+                const themeData = localStorage.getItem('ow_theme');
+                if (themeData) themeColors = { ...DEFAULT_THEME, ...JSON.parse(themeData) };
+                const firebaseData = localStorage.getItem('ow_firebase_config');
+                if (firebaseData) firebaseConfig = JSON.parse(firebaseData);
+                const gameData = localStorage.getItem('ow_gamification');
+                if (gameData) gamification = { ...DEFAULT_GAMIFICATION, ...JSON.parse(gameData), badges: JSON.parse(gameData).badges || DEFAULT_GAMIFICATION.badges };
+
+            } catch (e) {
+                console.error("Error loading state:", e);
+                rollsLeft = 3;
+            }
+        }
+
+        function saveState() {
+            const today = new Date().toISOString().split('T')[0];
+            localStorage.setItem('ow_date', today);
+            localStorage.setItem('ow_rolls', rollsLeft.toString());
+            localStorage.setItem('ow_pos', currentPos.toString());
+            localStorage.setItem('ow_user', activePlayer);
+            if (profileImage) {
+                localStorage.setItem('ow_profile_image', profileImage);
+            } else {
+                localStorage.removeItem('ow_profile_image');
+            }
+            localStorage.setItem('ow_logs', JSON.stringify(completedLogs));
+            localStorage.setItem('ow_tiles', JSON.stringify(boardTiles));
+            localStorage.setItem('ow_res', JSON.stringify(wellbeingResources));
+            localStorage.setItem('ow_res_head', JSON.stringify(resHeader));
+            localStorage.setItem('ow_theme', JSON.stringify(themeColors));
+            localStorage.setItem('ow_gamification', JSON.stringify(gamification));
+            if (firebaseConfig) localStorage.setItem('ow_firebase_config', JSON.stringify(firebaseConfig)); else localStorage.removeItem('ow_firebase_config');
+        }
+
+        function hexToRgba(hex, alpha) {
+            const h = (hex || '#0f172a').replace('#','');
+            const full = h.length === 3 ? h.split('').map(x => x+x).join('') : h;
+            const n = parseInt(full, 16);
+            if (Number.isNaN(n)) return `rgba(15,23,42,${alpha})`;
+            return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${alpha})`;
+        }
+
+        function applyThemeColors() {
+            document.documentElement.style.setProperty('--header-bg-start', themeColors.headerStart || DEFAULT_THEME.headerStart);
+            document.documentElement.style.setProperty('--header-bg-end', themeColors.headerEnd || DEFAULT_THEME.headerEnd);
+            document.documentElement.style.setProperty('--board-bg', themeColors.boardBg || DEFAULT_THEME.boardBg);
+            document.documentElement.style.setProperty('--tile-bg', themeColors.tileBg || DEFAULT_THEME.tileBg);
+            document.documentElement.style.setProperty('--tile-text', themeColors.tileText || DEFAULT_THEME.tileText);
+            document.documentElement.style.setProperty('--accent-btn', themeColors.accentBtn || DEFAULT_THEME.accentBtn);
+            document.documentElement.style.setProperty('--accent-btn-hover', themeColors.accentBtn || DEFAULT_THEME.accentBtn);
+            document.documentElement.style.setProperty('--page-bg', themeColors.pageBg || DEFAULT_THEME.pageBg);
+            document.documentElement.style.setProperty('--tile-accent', themeColors.tileAccent || DEFAULT_THEME.tileAccent);
+            document.documentElement.style.setProperty('--page-bg', themeColors.pageBg || DEFAULT_THEME.pageBg);
+            document.documentElement.style.setProperty('--muted-text', themeColors.mutedText || DEFAULT_THEME.mutedText);
+            document.documentElement.style.setProperty('--panel-bg', themeColors.panelBg || DEFAULT_THEME.panelBg);
+            document.documentElement.style.setProperty('--panel-soft', themeColors.panelSoft || DEFAULT_THEME.panelSoft);
+            document.documentElement.style.setProperty('--border-color', themeColors.borderColor || DEFAULT_THEME.borderColor);
+            document.documentElement.style.setProperty('--success', themeColors.success || DEFAULT_THEME.success);
+            document.documentElement.style.setProperty('--warning', themeColors.warning || DEFAULT_THEME.warning);
+            document.documentElement.style.setProperty('--danger', themeColors.danger || DEFAULT_THEME.danger);
+            document.documentElement.style.setProperty('--center-bg', themeColors.centerBg || DEFAULT_THEME.centerBg);
+            document.documentElement.style.setProperty('--input-bg', themeColors.inputBg || DEFAULT_THEME.inputBg);
+            document.getElementById('app-body')?.style.setProperty('background-color', themeColors.pageBg || DEFAULT_THEME.pageBg);
+        }
+
+        function renderBoardGrid() {
+            boardTiles.forEach((tile, i) => {
+                const el = document.getElementById(`tile-${i}`);
+                if (!el) return;
+
+                const imageMarkup = tile.img 
+                    ? `<img src="${tile.img}" class="absolute inset-0 w-full h-full object-cover opacity-20 hover:opacity-30 transition">` 
+                    : '';
+
+                el.innerHTML = `
+                    ${imageMarkup}
+                    <span class="absolute top-1 left-2 text-[10px] font-black opacity-60 z-10">${i}</span>
+                    <div class="mt-2 custom-tile-accent text-sm md:text-base z-10"><i class="fa-solid ${tile.icon || 'fa-star'}"></i></div>
+                    <span class="text-[10px] md:text-xs font-bold leading-tight my-0.5 line-clamp-2 z-10">${tile.title}</span>
+                    <span class="text-[8px] font-extrabold px-1 py-0.5 bg-black/10 rounded uppercase z-10">${tile.category || 'Break'}</span>
+                `;
+            });
+
+            document.getElementById('player-name-display').innerText = activePlayer;
+            updatePawnVisual();
+        }
+
+        function updatePawnVisual() {
+            const pawn = document.getElementById('player-pawn');
+            const pawnImg = document.getElementById('player-pawn-image');
+            const pawnIcon = document.getElementById('player-pawn-icon');
+            if (!pawn || !pawnImg || !pawnIcon) return;
+
+            if (profileImage) {
+                pawnImg.src = profileImage;
+                pawnImg.classList.remove('hidden');
+                pawnIcon.classList.add('hidden');
+                pawn.title = `${activePlayer}'s player piece`;
+            } else {
+                pawnImg.removeAttribute('src');
+                pawnImg.classList.add('hidden');
+                pawnIcon.classList.remove('hidden');
+                pawn.title = `${activePlayer}'s player piece`;
+            }
+        }
+
+        function updatePawnPosition(index) {
+            const tile = document.getElementById(`tile-${index}`);
+            const pawn = document.getElementById('player-pawn');
+            const board = document.getElementById('board-container');
+
+            if (!tile || !pawn || !board) return;
+
+            document.querySelectorAll('[id^="tile-"]').forEach(t => t.classList.remove('ring-4', 'ring-emerald-400', 'z-20'));
+            tile.classList.add('ring-4', 'ring-emerald-400', 'z-20');
+
+            const tileRect = tile.getBoundingClientRect();
+            const boardRect = board.getBoundingClientRect();
+
+            const left = (tileRect.left - boardRect.left) + (tileRect.width / 2) - (pawn.offsetWidth / 2);
+            const top = (tileRect.top - boardRect.top) + (tileRect.height / 2) - (pawn.offsetHeight / 2);
+
+            pawn.style.left = `${left}px`;
+            pawn.style.top = `${top}px`;
+        }
+
+        function rollDice() {
+            if (isMoving) return;
+
+            if (rollsLeft <= 0) {
+                alert("You've completed your 3 daily rolls today! Great job staying active.");
+                return;
+            }
+
+            isMoving = true;
+            const btn = document.getElementById('roll-btn');
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Moving...`;
+
+            const diceRoll = Math.floor(Math.random() * 6) + 1;
+            document.getElementById('dice-container').innerHTML = `<span class="text-4xl md:text-5xl font-black">${diceRoll}</span>`;
+            document.getElementById('dice-status').innerText = `Rolled a ${diceRoll}! Step-by-step moving...`;
+
+            let steps = 0;
+            const timer = setInterval(() => {
+                steps++;
+                currentPos = (currentPos + 1) % boardTiles.length;
+                updatePawnPosition(currentPos);
+
+                if (steps >= diceRoll) {
+                    clearInterval(timer);
+                    rollsLeft = Math.max(0, rollsLeft - 1);
+                    saveState();
+                    updateUI();
+
+                    setTimeout(() => {
+                        openMissionModal(currentPos);
+                    }, 250);
+                }
+            }, 180);
+        }
+
+        function openMissionModal(index) {
+            const tile = boardTiles[index] || DEFAULT_TILES[0];
+            document.getElementById('modal-tile-title').innerText = tile.title;
+            document.getElementById('modal-tile-category').innerText = tile.category || 'Wellbeing';
+            document.getElementById('modal-tile-desc').innerText = tile.desc;
+            document.getElementById('modal-tile-icon').innerHTML = `<i class="fa-solid ${tile.icon || 'fa-star'}"></i>`;
+
+            const imgContainer = document.getElementById('modal-tile-image-container');
+            const imgEl = document.getElementById('modal-tile-image');
+
+            if (tile.img) {
+                imgEl.src = tile.img;
+                imgContainer.classList.remove('hidden');
+            } else {
+                imgContainer.classList.add('hidden');
+            }
+
+            const modal = document.getElementById('mission-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeMissionModal(completed) {
+            const modal = document.getElementById('mission-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+
+            if (completed) {
+                const tile = boardTiles[currentPos];
+                const log = {
+                    id: Date.now(),
+                    player: activePlayer,
+                    title: tile.title,
+                    desc: tile.desc,
+                    category: tile.category || 'Break',
+                    points: Number.isFinite(Number(tile.points)) ? Number(tile.points) : Number(gamification.defaultPoints || 0),
+                    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                    date: new Date().toLocaleDateString(),
+                    profileImage: profileImage || '',
+                    completedAt: new Date().toISOString(),
+                    dateKey: new Date().toISOString().split('T')[0]
+                };
+                completedLogs.unshift(log);
+                saveState();
+                syncLogToTeam(log);
+            }
+
+            isMoving = false;
+            const btn = document.getElementById('roll-btn');
+            btn.disabled = false;
+            btn.innerHTML = `<i class="fa-solid fa-dice"></i> Roll Dice`;
+            updateUI();
+        }
+
+        function updateUI() {
+            document.getElementById('rolls-count-display').innerText = `${rollsLeft} / 3`;
+            document.getElementById('completed-count-display').innerText = completedLogs.length;
+
+            const feed = document.getElementById('activity-log-feed');
+            if (completedLogs.length === 0) {
+                feed.innerHTML = `<p class="text-xs text-slate-400 text-center py-8 font-medium">No completed breaks logged today yet. Roll the dice to begin!</p>`;
+            } else {
+                feed.innerHTML = completedLogs.map(item => `
+                    <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-3 flex flex-col gap-1">
+                        <div class="flex justify-between items-center text-[10px] text-slate-400 font-bold">
+                            <span>${item.player}</span>
+                            <span>${item.time}</span>
+                        </div>
+                        <h4 class="text-xs font-bold text-slate-800 line-through decoration-emerald-500 decoration-2">${item.title}</h4>
+                        <p class="text-[11px] text-slate-500">${item.desc}</p>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function promptPlayerNameChange() {
+            openProfileModal();
+        }
+
+        function openProfileModal() {
+            document.getElementById('profile-name-input').value = activePlayer;
+            const preview = document.getElementById('profile-preview-image');
+            const icon = document.getElementById('profile-preview-icon');
+
+            if (profileImage) {
+                preview.src = profileImage;
+                preview.classList.remove('hidden');
+                icon.classList.add('hidden');
+            } else {
+                preview.removeAttribute('src');
+                preview.classList.add('hidden');
+                icon.classList.remove('hidden');
+            }
+
+            const modal = document.getElementById('profile-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeProfileModal() {
+            const modal = document.getElementById('profile-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        async function saveProfile() {
+            const name = document.getElementById('profile-name-input').value.trim();
+            if (name) activePlayer = name;
+            saveState();
+            await syncCurrentProfileToFirebase();
+            renderBoardGrid();
+            updateUI();
+            closeProfileModal();
+        }
+
+        function removeProfilePhoto() {
+            profileImage = "";
+            const preview = document.getElementById('profile-preview-image');
+            const icon = document.getElementById('profile-preview-icon');
+            preview.removeAttribute('src');
+            preview.classList.add('hidden');
+            icon.classList.remove('hidden');
+            document.getElementById('profile-photo-input').value = "";
+        }
+
+        function handleProfilePhotoUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            resizeImageForStorage(file, 320, 0.82).then(dataUrl => {
+                profileImage = dataUrl;
+                const preview = document.getElementById('profile-preview-image');
+                const icon = document.getElementById('profile-preview-icon');
+                preview.src = dataUrl;
+                preview.classList.remove('hidden');
+                icon.classList.add('hidden');
+            }).catch(() => alert("Sorry, that image could not be loaded. Please try another photo."));
+        }
+
+        function resizeImageForStorage(file, maxSize = 800, quality = 0.82) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onerror = reject;
+                reader.onload = () => {
+                    const img = new Image();
+                    img.onerror = reject;
+                    img.onload = () => {
+                        const scale = Math.min(1, maxSize / Math.max(img.width, img.height));
+                        const canvas = document.createElement('canvas');
+                        canvas.width = Math.max(1, Math.round(img.width * scale));
+                        canvas.height = Math.max(1, Math.round(img.height * scale));
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        resolve(canvas.toDataURL('image/jpeg', quality));
+                    };
+                    img.src = reader.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function openResourcesModal() {
+            document.getElementById('resources-modal-title').innerText = resHeader.title;
+            document.getElementById('resources-modal-subtitle').innerText = resHeader.subtitle;
+
+            const container = document.getElementById('resources-cards-container');
+            container.innerHTML = wellbeingResources.map(r => `
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 flex justify-between items-center gap-3">
+                    <div>
+                        <h4 class="text-xs font-extrabold text-slate-800">${r.title}</h4>
+                        <p class="text-[11px] text-slate-500 mt-0.5">${r.desc}</p>
+                    </div>
+                    ${r.link ? `<a href="${r.link}" target="_blank" class="px-3 py-1.5 custom-accent-btn text-white font-bold text-xs rounded-xl shadow-sm transition whitespace-nowrap">Open Link</a>` : ''}
+                </div>
+            `).join('');
+
+            const modal = document.getElementById('resources-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeResourcesModal() {
+            const modal = document.getElementById('resources-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function openSummaryModal() {
+            document.getElementById('summary-total-num').innerText = completedLogs.length;
+            const modal = document.getElementById('summary-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeSummaryModal() {
+            const modal = document.getElementById('summary-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function openAdminPinModal() {
+            document.getElementById('admin-pin-input').value = '';
+            document.getElementById('admin-pin-error').classList.add('hidden');
+            const modal = document.getElementById('admin-pin-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeAdminPinModal() {
+            const modal = document.getElementById('admin-pin-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function verifyAdminPin() {
+            const pin = document.getElementById('admin-pin-input').value;
+            if (pin === adminPin) {
+                closeAdminPinModal();
+                populateAdminData();
+                const portal = document.getElementById('admin-portal-modal');
+                portal.classList.remove('hidden');
+                portal.classList.add('flex');
+            } else {
+                document.getElementById('admin-pin-error').classList.remove('hidden');
+            }
+        }
+
+        function closeAdminPortal() {
+            const portal = document.getElementById('admin-portal-modal');
+            portal.classList.add('hidden');
+            portal.classList.remove('flex');
+        }
+
+        function switchAdminTab(tabIndex) {
+            for (let i = 1; i <= 8; i++) {
+                document.getElementById(`admin-tab-btn-${i}`).className = "px-3 py-1.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 whitespace-nowrap";
+                document.getElementById(`admin-tab-${i}`).classList.add('hidden');
+                document.getElementById(`admin-tab-${i}`).classList.remove('flex');
+            }
+            document.getElementById(`admin-tab-btn-${tabIndex}`).className = "px-3 py-1.5 text-xs font-bold rounded-lg bg-teal-50 text-teal-700 border border-teal-200 whitespace-nowrap";
+            document.getElementById(`admin-tab-${tabIndex}`).classList.remove('hidden');
+            document.getElementById(`admin-tab-${tabIndex}`).classList.add('flex');
+        }
+
+        function populateAdminData() {
+            // Logs table
+            const tbody = document.getElementById('admin-table-logs-body');
+            tbody.innerHTML = completedLogs.map((log, idx) => `
+                <tr class="hover:bg-slate-50">
+                    <td class="p-2.5 font-mono text-slate-500">${log.time}</td>
+                    <td class="p-2.5 font-bold text-slate-700">${log.player}</td>
+                    <td class="p-2.5 text-slate-600">${log.title}</td>
+                    <td class="p-2.5 text-right">
+                        <button onclick="deleteSingleLog(${idx})" class="px-2 py-1 bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold text-[10px] rounded border border-rose-200">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+
+            // Color Pickers
+            document.getElementById('picker-header-start').value = themeColors.headerStart || DEFAULT_THEME.headerStart;
+            document.getElementById('picker-header-end').value = themeColors.headerEnd || DEFAULT_THEME.headerEnd;
+            document.getElementById('picker-board-bg').value = themeColors.boardBg || DEFAULT_THEME.boardBg;
+            document.getElementById('picker-tile-bg').value = themeColors.tileBg || DEFAULT_THEME.tileBg;
+            document.getElementById('picker-tile-text').value = themeColors.tileText || DEFAULT_THEME.tileText;
+            document.getElementById('picker-accent-btn').value = themeColors.accentBtn || DEFAULT_THEME.accentBtn;
+            document.getElementById('picker-page-bg').value = themeColors.pageBg || DEFAULT_THEME.pageBg;
+            document.getElementById('picker-tile-accent').value = themeColors.tileAccent || DEFAULT_THEME.tileAccent;
+            const colourMap = { 'picker-panel-bg':'panelBg','picker-panel-soft':'panelSoft','picker-border':'borderColor','picker-muted':'mutedText','picker-success':'success','picker-warning':'warning','picker-danger':'danger','picker-center':'centerBg','picker-input':'inputBg','picker-overlay':'overlay' };
+            Object.entries(colourMap).forEach(([id,key]) => { const el=document.getElementById(id); if(el) el.value=themeColors[key] || DEFAULT_THEME[key]; });
+            document.getElementById('firebase-config').value = firebaseConfig ? JSON.stringify(firebaseConfig, null, 2) : '';
+
+            // Tiles Editor
+            const tilesList = document.getElementById('admin-tiles-editor-list');
+            tilesList.innerHTML = boardTiles.map((t, idx) => `
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 flex flex-col gap-2">
+                    <span class="text-xs font-black text-slate-700">Tile #${idx}</span>
+                    <div class="grid grid-cols-3 gap-2">
+                        <input type="text" id="edit-tile-title-${idx}" value="${t.title}" class="p-1.5 bg-white border border-slate-300 rounded-lg text-xs font-semibold" placeholder="Title">
+                        <input type="text" id="edit-tile-cat-${idx}" value="${t.category || ''}" class="p-1.5 bg-white border border-slate-300 rounded-lg text-xs font-semibold" placeholder="Category">
+                        <input type="text" id="edit-tile-icon-${idx}" value="${t.icon || 'fa-star'}" class="p-1.5 bg-white border border-slate-300 rounded-lg text-xs font-semibold" placeholder="Icon (fa-star)">
+                        <input type="number" id="edit-tile-points-${idx}" value="${Number.isFinite(t.points) ? t.points : gamification.defaultPoints}" min="0" max="1000" class="p-1.5 bg-white border border-slate-300 rounded-lg text-xs font-semibold" placeholder="Points">
+                    </div>
+                    <input type="text" id="edit-tile-desc-${idx}" value="${t.desc}" class="p-1.5 bg-white border border-slate-300 rounded-lg text-xs" placeholder="Description">
+                    
+                    <!-- Image Upload & URL input -->
+                    <div class="flex gap-2 items-center mt-1">
+                        <input type="text" id="edit-tile-img-${idx}" value="${t.img || ''}" class="flex-1 p-1.5 bg-white border border-slate-300 rounded-lg text-xs" placeholder="Image URL or upload an image">
+                        <label class="px-2.5 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-lg cursor-pointer whitespace-nowrap">
+                            <i class="fa-solid fa-upload"></i> Upload
+                            <input type="file" accept="image/*" class="hidden" onchange="handleTileFileUpload(event, ${idx})">
+                        </label>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <img id="tile-upload-preview-${idx}" src="${t.img || ''}" alt="Tile preview" class="${t.img ? '' : 'hidden'} w-14 h-14 object-cover rounded-lg border border-slate-200">
+                        <span class="text-[10px] text-slate-500">Image appears subtly on the tile and full-size when the player lands here.</span>
+                    </div>
+                </div>
+            `).join('');
+
+            // Resources Editor
+            document.getElementById('admin-res-title').value = resHeader.title;
+            document.getElementById('admin-res-subtitle').value = resHeader.subtitle;
+
+            const resList = document.getElementById('admin-res-editor-list');
+            resList.innerHTML = wellbeingResources.map((r, idx) => `
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 flex flex-col gap-2">
+                    <input type="text" id="edit-res-title-${idx}" value="${r.title}" class="p-1.5 bg-white border border-slate-300 rounded-lg text-xs font-bold" placeholder="Title">
+                    <input type="text" id="edit-res-desc-${idx}" value="${r.desc}" class="p-1.5 bg-white border border-slate-300 rounded-lg text-xs" placeholder="Description">
+                    <input type="text" id="edit-res-link-${idx}" value="${r.link || ''}" class="p-1.5 bg-white border border-slate-300 rounded-lg text-xs" placeholder="URL Link">
+                </div>
+            `).join('');
+
+            // Gamification controls
+            document.getElementById('game-leaderboard-title').value = gamification.leaderboardTitle;
+            document.getElementById('game-leaderboard-subtitle').value = gamification.leaderboardSubtitle;
+            document.getElementById('game-default-points').value = gamification.defaultPoints;
+            document.getElementById('game-streaks').checked = !!gamification.streaksEnabled;
+            document.getElementById('game-badges').checked = !!gamification.badgesEnabled;
+            document.getElementById('game-podium').checked = !!gamification.podiumEnabled;
+            document.getElementById('game-recent').checked = !!gamification.recentActivityEnabled;
+            document.getElementById('game-gold').value = gamification.podiumGold;
+            document.getElementById('game-silver').value = gamification.podiumSilver;
+            document.getElementById('game-bronze').value = gamification.podiumBronze;
+            document.getElementById('game-badge').value = gamification.badgeColor;
+            renderGamificationEditors();
+
+            // Raw JSON
+            const fullConfig = { boardTiles, wellbeingResources, resHeader, themeColors, gamification, profileImage, activePlayer };
+            document.getElementById('admin-raw-json').value = JSON.stringify(fullConfig, null, 2);
+        }
+
+        function previewColors() {
+            themeColors.headerStart = document.getElementById('picker-header-start').value;
+            themeColors.headerEnd = document.getElementById('picker-header-end').value;
+            themeColors.boardBg = document.getElementById('picker-board-bg').value;
+            themeColors.tileBg = document.getElementById('picker-tile-bg').value;
+            themeColors.tileText = document.getElementById('picker-tile-text').value;
+            themeColors.accentBtn = document.getElementById('picker-accent-btn').value;
+            themeColors.pageBg = document.getElementById('picker-page-bg').value;
+            themeColors.tileAccent = document.getElementById('picker-tile-accent').value;
+            const colourMap = { 'picker-panel-bg':'panelBg','picker-panel-soft':'panelSoft','picker-border':'borderColor','picker-muted':'mutedText','picker-success':'success','picker-warning':'warning','picker-danger':'danger','picker-center':'centerBg','picker-input':'inputBg','picker-overlay':'overlay' };
+            Object.entries(colourMap).forEach(([id,key]) => { const el=document.getElementById(id); if(el) themeColors[key]=el.value; });
+            applyThemeColors();
+        }
+
+        function renderGamificationEditors() {
+            const wrap = document.getElementById('admin-badges-editor');
+            if (wrap) wrap.innerHTML = (gamification.badges || []).map((b, i) => `
+                <div class="grid grid-cols-12 gap-2 items-center bg-white border border-slate-200 rounded-xl p-2">
+                    <input id="badge-name-${i}" value="${String(b.name || '').replace(/"/g,'&quot;')}" class="col-span-4 p-1.5 border border-slate-300 rounded-lg text-[10px] font-bold" placeholder="Badge name">
+                    <input id="badge-icon-${i}" value="${b.icon || 'fa-star'}" class="col-span-3 p-1.5 border border-slate-300 rounded-lg text-[10px]" placeholder="fa-star">
+                    <input id="badge-threshold-${i}" type="number" min="1" value="${b.threshold || 1}" class="col-span-2 p-1.5 border border-slate-300 rounded-lg text-[10px]" placeholder="Threshold">
+                    <select id="badge-type-${i}" class="col-span-2 p-1.5 border border-slate-300 rounded-lg text-[10px]"><option value="count" ${b.type==='count'?'selected':''}>Challenges</option><option value="streak" ${b.type==='streak'?'selected':''}>Streak</option><option value="categories" ${b.type==='categories'?'selected':''}>Categories</option><option value="points" ${b.type==='points'?'selected':''}>Points</option></select>
+                    <button onclick="removeGamificationBadge(${i})" class="col-span-1 text-rose-500 hover:text-rose-700 font-black">×</button>
+                </div>`).join('');
+            const points = document.getElementById('admin-points-editor');
+            if (points) points.innerHTML = boardTiles.map((t,i)=>`<label class="bg-white border border-slate-200 rounded-xl p-2 text-[10px] font-bold flex items-center justify-between gap-2"><span class="truncate">${i}. ${t.title}</span><input type="number" min="0" max="1000" id="point-editor-${i}" value="${Number.isFinite(t.points)?t.points:gamification.defaultPoints}" class="w-20 p-1 border border-slate-300 rounded-lg text-xs"></label>`).join('');
+        }
+        function collectGamificationBadges() {
+            gamification.badges = (gamification.badges || []).map((b,i) => ({
+                name: document.getElementById(`badge-name-${i}`)?.value.trim() || b.name,
+                icon: document.getElementById(`badge-icon-${i}`)?.value.trim() || 'fa-star',
+                threshold: Math.max(1, parseInt(document.getElementById(`badge-threshold-${i}`)?.value || b.threshold || 1, 10)),
+                type: document.getElementById(`badge-type-${i}`)?.value || 'count'
+            }));
+            boardTiles.forEach((t,i)=>{ const el=document.getElementById(`point-editor-${i}`); if(el) t.points=Math.max(0,parseInt(el.value||gamification.defaultPoints,10)); });
+        }
+        function addGamificationBadge() {
+            gamification.badges.push({ name:'New Badge', icon:'fa-star', threshold:1, type:'count' });
+            renderGamificationEditors();
+        }
+        function removeGamificationBadge(i) {
+            if (gamification.badges.length <= 1) return alert('Keep at least one badge.');
+            gamification.badges.splice(i,1); renderGamificationEditors();
+        }
+        function resetGamificationDefaults() {
+            gamification = JSON.parse(JSON.stringify(DEFAULT_GAMIFICATION));
+            populateAdminData();
+        }
+
+        function resetDefaultColors() {
+            themeColors = { ...DEFAULT_THEME };
+            applyThemeColors();
+            populateAdminData();
+        }
+
+        function handleTileFileUpload(event, tileIndex) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            resizeImageForStorage(file, 900, 0.82).then(dataUrl => {
+                document.getElementById(`edit-tile-img-${tileIndex}`).value = dataUrl;
+                boardTiles[tileIndex].img = dataUrl;
+                const preview = document.getElementById(`tile-upload-preview-${tileIndex}`);
+                if (preview) {
+                    preview.src = dataUrl;
+                    preview.classList.remove('hidden');
+                }
+            }).catch(() => alert("Sorry, that image could not be loaded. Please try another image."));
+        }
+
+        function deleteSingleLog(idx) {
+            completedLogs.splice(idx, 1);
+            saveState();
+            populateAdminData();
+            updateUI();
+        }
+
+        function clearAllLogs() {
+            if (confirm("Clear all team completion logs?")) {
+                completedLogs = [];
+                saveState();
+                populateAdminData();
+                updateUI();
+            }
+        }
+
+        function exportToCSV() {
+            if (completedLogs.length === 0) {
+                alert("No logs to export!");
+                return;
+            }
+            let csv = "Time,Date,Player,Mission Title,Description,Points\n";
+            completedLogs.forEach(l => {
+                csv += `"${l.time}","${l.date}","${l.player}","${l.title}","${l.desc}","${pointsForLog(l)}"\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('href', url);
+            a.setAttribute('download', `wellbeing_report_${new Date().toISOString().split('T')[0]}.csv`);
+            a.click();
+        }
+
+        async function getFirebaseBridge() {
+            if (!window.firebaseBridgeReady) throw new Error('Firebase bridge is not loaded.');
+            return await window.firebaseBridgeReady;
+        }
+
+        async function testFirebaseConnection() {
+            const status = document.getElementById('firebase-status');
+            try {
+                const raw = document.getElementById('firebase-config').value.trim();
+                if (!raw) throw new Error('Paste your Firebase Web App config JSON first.');
+                const config = JSON.parse(raw);
+                firebaseConfig = config;
+                saveState();
+                const bridge = await getFirebaseBridge();
+                await bridge.init(config);
+                await bridge.ensureAuth();
+                if (status) status.innerText = '✓ Firebase connected. Anonymous authentication is working.';
+                alert('Firebase connected successfully! The team leaderboard can now sync across devices.');
+                loadTeamLeaderboard();
+            } catch (e) {
+                console.error(e);
+                if (status) status.innerText = 'Connection failed: ' + (e.message || e);
+                alert('Firebase connection failed. Make sure the config is valid and Anonymous Authentication and Firestore are enabled.\n\n' + (e.message || e));
+            }
+        }
+
+        function clearFirebaseConfig() {
+            firebaseConfig = null;
+            localStorage.removeItem('ow_firebase_config');
+            const input = document.getElementById('firebase-config');
+            if (input) input.value = '';
+            const status = document.getElementById('firebase-status');
+            if (status) status.innerText = 'Firebase configuration cleared. The game will use local storage until Firebase is configured.';
+            loadTeamLeaderboard();
+        }
+
+        async function syncCurrentProfileToFirebase() {
+            if (!firebaseConfig) return;
+            try {
+                const bridge = await getFirebaseBridge();
+                await bridge.init(firebaseConfig);
+                await bridge.upsertPlayer({ player: activePlayer, profileImage: profileImage || '' });
+            } catch (e) {
+                console.warn('Firebase profile sync failed; keeping local profile.', e);
+            }
+        }
+
+        async function syncLogToTeam(log) {
+            if (!firebaseConfig) return;
+            try {
+                const bridge = await getFirebaseBridge();
+                await bridge.init(firebaseConfig);
+                await bridge.ensureAuth();
+                await bridge.upsertPlayer({ player: log.player, profileImage: log.profileImage || '' });
+                await bridge.addLog({
+                    player: log.player,
+                    title: log.title,
+                    desc: log.desc,
+                    category: log.category,
+                    time: log.time,
+                    date: log.date,
+                    dateKey: log.dateKey || '',
+                    points: Number.isFinite(Number(log.points)) ? Number(log.points) : Number(gamification.defaultPoints || 0),
+                    completedAt: log.completedAt || new Date().toISOString(),
+                    profileImage: log.profileImage || ''
+                });
+            } catch (e) { console.warn('Firebase team sync failed', e); }
+        }
+
+        async function syncExistingLogs() {
+            if (!firebaseConfig) return alert('Configure Firebase first in the Team Sync tab.');
+            try {
+                const bridge = await getFirebaseBridge();
+                await bridge.init(firebaseConfig);
+                await bridge.ensureAuth();
+                for (const log of completedLogs) {
+                    await bridge.upsertPlayer({ player: log.player, profileImage: log.profileImage || '' });
+                    await bridge.addLog({
+                    player: log.player, title: log.title, desc: log.desc, category: log.category,
+                    time: log.time, date: log.date, dateKey: log.dateKey || '',
+                    points: Number.isFinite(Number(log.points)) ? Number(log.points) : Number(gamification.defaultPoints || 0),
+                    completedAt: log.completedAt || new Date().toISOString(), profileImage: log.profileImage || ''
+                    });
+                }
+                alert(`Uploaded ${completedLogs.length} local completion(s) to Firebase.`);
+                loadTeamLeaderboard();
+            } catch (e) {
+                alert('Could not upload local logs to Firebase. ' + (e.message || e));
+            }
+        }
+
+        let leaderboardPeriod = 'all';
+
+        function setLeaderboardPeriod(period) {
+            leaderboardPeriod = period;
+            ['all','week','month'].forEach(p => {
+                const el = document.getElementById(`lb-filter-${p}`);
+                if (!el) return;
+                el.className = p === period
+                    ? 'px-3 py-1.5 rounded-full text-xs font-black custom-accent-btn text-white'
+                    : 'px-3 py-1.5 rounded-full text-xs font-black bg-slate-100 text-slate-600';
+            });
+            loadTeamLeaderboard();
+        }
+
+        function logDateKey(log) {
+            if (log.dateKey) return log.dateKey;
+            if (log.completedAt) return new Date(log.completedAt).toISOString().split('T')[0];
+            if (log.created_at) return new Date(log.created_at).toISOString().split('T')[0];
+            const parsed = new Date(log.date || '');
+            return isNaN(parsed) ? '' : parsed.toISOString().split('T')[0];
+        }
+
+        function inLeaderboardPeriod(log) {
+            if (leaderboardPeriod === 'all') return true;
+            const key = logDateKey(log);
+            if (!key) return true;
+            const d = new Date(key + 'T00:00:00');
+            const now = new Date();
+            if (leaderboardPeriod === 'month') return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+            const start = new Date(now);
+            const day = start.getDay() || 7;
+            start.setDate(start.getDate() - day + 1);
+            start.setHours(0,0,0,0);
+            return d >= start;
+        }
+
+        function getStreak(logs) {
+            const days = [...new Set(logs.map(logDateKey).filter(Boolean))].sort().reverse();
+            if (!days.length) return 0;
+            let streak = 0;
+            let cursor = new Date(days[0] + 'T00:00:00');
+            for (let i = 0; i < days.length; i++) {
+                const d = new Date(days[i] + 'T00:00:00');
+                const diff = Math.round((cursor - d) / 86400000);
+                if (i === 0 || diff === 1) { streak++; cursor = d; } else break;
+            }
+            return streak;
+        }
+
+        function getBadge(stats) {
+            if (!gamification.badgesEnabled) return ['No badge', 'fa-minus'];
+            const badges = (gamification.badges || []).filter(Boolean).slice().sort((a,b)=>(b.threshold||0)-(a.threshold||0));
+            for (const b of badges) {
+                const value = b.type === 'streak' ? stats.streak : b.type === 'categories' ? stats.categories : b.type === 'points' ? stats.points : stats.count;
+                if (value >= Number(b.threshold || 0)) return [b.name, b.icon || 'fa-star'];
+            }
+            return ['Getting Started', 'fa-seedling'];
+        }
+
+        function pointsForLog(log) {
+            if (Number.isFinite(Number(log.points))) return Number(log.points);
+            const tile = boardTiles.find(t => String(t.title) === String(log.title));
+            return Number.isFinite(Number(tile?.points)) ? Number(tile.points) : Number(gamification.defaultPoints || 0);
+        }
+
+        async function loadTeamLeaderboard() {
+            const list = document.getElementById('leaderboard-list');
+            const podium = document.getElementById('leaderboard-podium');
+            const recent = document.getElementById('leaderboard-recent');
+            const status = document.getElementById('leaderboard-status');
+            if (!list) return;
+            const titleEl = document.querySelector('#leaderboard-modal h3');
+            const subtitleEl = document.querySelector('#leaderboard-modal h3 + p');
+            if (titleEl) titleEl.innerText = gamification.leaderboardTitle;
+            if (subtitleEl) subtitleEl.innerText = gamification.leaderboardSubtitle;
+            const podiumEl = document.getElementById('leaderboard-podium');
+            const recentSection = document.getElementById('leaderboard-recent')?.parentElement;
+            if (podiumEl) podiumEl.parentElement.classList.toggle('hidden', !gamification.podiumEnabled);
+            if (recentSection) recentSection.classList.toggle('hidden', !gamification.recentActivityEnabled);
+            let logs = completedLogs.slice();
+            let shared = false;
+            if (firebaseConfig) {
+                try {
+                    const bridge = await getFirebaseBridge();
+                    await bridge.init(firebaseConfig);
+                    await bridge.ensureAuth();
+                    logs = await bridge.getLogs(500);
+                    const players = await bridge.getPlayers();
+                    logs = logs.map(l => ({ ...l, profileImage: l.profileImage || players[l.playerId]?.profileImage || '' }));
+                    shared = true;
+                    teamLogs = logs;
+                } catch(e) { console.warn('Firebase leaderboard load failed', e); }
+            }
+            const periodLogs = logs.filter(inLeaderboardPeriod);
+            const stats = {};
+            periodLogs.forEach((l, i) => {
+                const name = l.player || 'Coworker';
+                if (!stats[name]) stats[name] = { count: 0, points: 0, image: l.profile_image || l.profileImage || '', last: '', categories: new Set(), logs: [] };
+                stats[name].count++;
+                stats[name].points += pointsForLog(l);
+                stats[name].categories.add(l.category || 'Break');
+                stats[name].logs.push(l);
+                if (!stats[name].image && (l.profile_image || l.profileImage)) stats[name].image = l.profile_image || l.profileImage;
+            });
+            Object.values(stats).forEach(s => {
+                s.streak = gamification.streaksEnabled ? getStreak(s.logs) : 0;
+                s.last = s.logs.slice().sort((a,b) => new Date(b.completedAt || b.created_at || 0) - new Date(a.completedAt || a.created_at || 0))[0]?.title || 'Completed wellbeing challenge';
+                s.categories = s.categories.size;
+                s.badge = getBadge(s);
+            });
+            const rows = Object.entries(stats).sort((a,b)=>b[1].points-a[1].points || b[1].count-a[1].count || b[1].streak-a[1].streak || a[0].localeCompare(b[0]));
+            const medals = ['🥇','🥈','🥉'];
+            podium.innerHTML = rows.slice(0,3).map(([name,s],i)=>`<div style="box-shadow:inset 0 3px 0 ${[gamification.podiumGold,gamification.podiumSilver,gamification.podiumBronze][i] || gamification.podiumGold}" class="custom-panel-soft border custom-border rounded-2xl p-4 text-center">\n                <div class="text-2xl">${medals[i]}</div><div class="w-14 h-14 mx-auto my-2 rounded-full overflow-hidden bg-slate-200 flex items-center justify-center font-black">${s.image?`<img src="${s.image}" class="w-full h-full object-cover">`:`<i class="fa-solid fa-user custom-muted"></i>`}</div>\n                <div class="font-black text-sm truncate">${name}</div><div class="text-2xl font-black custom-tile-accent mt-1">${s.count}</div><div class="text-[9px] custom-muted font-bold uppercase">challenges</div>\n                <div class="mt-2 text-[9px] font-bold custom-muted"><i class="fa-solid fa-fire"></i> ${s.streak} day streak · ${s.badge[0]}</div>\n            </div>`).join('');
+            if (!rows.length) podium.innerHTML = '<div class="sm:col-span-3 text-center py-6 custom-muted text-xs">Complete a challenge to appear on the podium.</div>';
+            list.innerHTML = rows.length ? rows.map(([name,s], i) => `
+                <div class="custom-panel-soft border custom-border rounded-2xl p-3 flex items-center gap-3">
+                    <div class="w-8 text-center font-black ${i<3?'text-amber-500':'custom-muted'}">#${i+1}</div>
+                    <div class="w-11 h-11 rounded-full overflow-hidden bg-slate-100 flex items-center justify-center shrink-0">${s.image ? `<img src="${s.image}" class="w-full h-full object-cover">` : `<i class="fa-solid fa-user custom-muted"></i>`}</div>
+                    <div class="flex-1 min-w-0"><div class="font-extrabold text-sm truncate">${name}</div><div class="text-[10px] custom-muted truncate">${s.last}</div><div class="mt-1 flex flex-wrap gap-1">${gamification.badgesEnabled ? `<span style="background:${gamification.badgeColor}22;color:${gamification.badgeColor}" class="px-1.5 py-0.5 rounded-full text-[8px] font-black"><i class="fa-solid ${s.badge[1]}"></i> ${s.badge[0]}</span>` : ''}${gamification.streaksEnabled ? `<span class="px-1.5 py-0.5 rounded-full bg-orange-100 text-orange-700 text-[8px] font-black"><i class="fa-solid fa-fire"></i> ${s.streak} day streak</span>` : ''}</div></div>
+                    <div class="text-right"><div class="text-lg font-black custom-tile-accent">${s.points}</div><div class="text-[9px] custom-muted font-bold uppercase">points</div></div>
+                </div>`).join('') : `<div class="text-center py-6 custom-muted text-xs">No completed challenges for this period yet.</div>`;
+            const recentLogs = logs.slice().sort((a,b)=>new Date(b.completedAt || b.created_at || 0)-new Date(a.completedAt || a.created_at || 0)).slice(0,6);
+            recent.innerHTML = recentLogs.length ? recentLogs.map(l=>`<div class="custom-panel-soft border custom-border rounded-xl p-2.5 flex gap-2 items-center"><div class="w-8 h-8 rounded-full overflow-hidden bg-slate-100 flex items-center justify-center shrink-0">${l.profile_image||l.profileImage?`<img src="${l.profile_image||l.profileImage}" class="w-full h-full object-cover">`:`<i class="fa-solid fa-user text-xs custom-muted"></i>`}</div><div class="min-w-0"><div class="text-[10px] font-black truncate">${l.player||'Coworker'} <span class="custom-muted font-medium">completed</span></div><div class="text-[10px] custom-muted truncate">${l.title||'Wellbeing challenge'}</div></div></div>`).join('') : '<div class="sm:col-span-2 text-center py-4 custom-muted text-xs">No recent activity.</div>';
+            status.innerText = shared ? 'Live team leaderboard' : 'Local leaderboard. Configure Team Sync in Admin Portal to share progress across devices.';
+        }
+
+        function openLeaderboardModal() {
+            const modal = document.getElementById('leaderboard-modal');
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            loadTeamLeaderboard();
+        }
+        function closeLeaderboardModal() {
+            const modal = document.getElementById('leaderboard-modal');
+            modal.classList.add('hidden'); modal.classList.remove('flex');
+        }
+
+        function grantRolls(amount) {
+            rollsLeft += amount;
+            saveState();
+            updateUI();
+            alert(`Granted +${amount} extra rolls! Total rolls remaining: ${rollsLeft}`);
+        }
+
+        function forceGlobalReset() {
+            rollsLeft = 3;
+            saveState();
+            updateUI();
+            alert("Daily rolls limit reset to 3/3!");
+        }
+
+        function addNewResourceCard() {
+            wellbeingResources.push({
+                id: Date.now(),
+                title: "New Support Resource",
+                desc: "Description of link or contact guide.",
+                link: "https://example.com"
+            });
+            populateAdminData();
+        }
+
+        function saveAdminSettings() {
+            // Save colors
+            previewColors();
+
+            // Save tiles & images
+            boardTiles.forEach((t, idx) => {
+                const title = document.getElementById(`edit-tile-title-${idx}`);
+                if (title) {
+                    t.title = title.value;
+                    t.category = document.getElementById(`edit-tile-cat-${idx}`).value;
+                    t.icon = document.getElementById(`edit-tile-icon-${idx}`).value;
+                    t.desc = document.getElementById(`edit-tile-desc-${idx}`).value;
+                    t.img = document.getElementById(`edit-tile-img-${idx}`).value;
+                    const pointsEl = document.getElementById(`edit-tile-points-${idx}`);
+                    if (pointsEl) t.points = Math.max(0, parseInt(pointsEl.value || gamification.defaultPoints, 10));
+                }
+            });
+
+            // Save resources header & cards
+            resHeader.title = document.getElementById('admin-res-title').value;
+            resHeader.subtitle = document.getElementById('admin-res-subtitle').value;
+
+            wellbeingResources.forEach((r, idx) => {
+                const title = document.getElementById(`edit-res-title-${idx}`);
+                if (title) {
+                    r.title = title.value;
+                    r.desc = document.getElementById(`edit-res-desc-${idx}`).value;
+                    r.link = document.getElementById(`edit-res-link-${idx}`).value;
+                }
+            });
+
+            // Parse raw JSON if tab 6 modified
+            try {
+                const rawVal = document.getElementById('admin-raw-json').value;
+                const parsed = JSON.parse(rawVal);
+                if (parsed.boardTiles) boardTiles = parsed.boardTiles;
+                if (parsed.wellbeingResources) wellbeingResources = parsed.wellbeingResources;
+                if (parsed.resHeader) resHeader = parsed.resHeader;
+                if (parsed.themeColors) themeColors = parsed.themeColors;
+                if (parsed.gamification) gamification = { ...DEFAULT_GAMIFICATION, ...parsed.gamification, badges: parsed.gamification.badges || DEFAULT_GAMIFICATION.badges };
+                if (typeof parsed.profileImage === 'string') profileImage = parsed.profileImage;
+                if (typeof parsed.activePlayer === 'string' && parsed.activePlayer.trim()) activePlayer = parsed.activePlayer.trim();
+            } catch (e) {
+                // Ignore raw JSON parse errors if invalid
+            }
+
+            gamification.leaderboardTitle = document.getElementById('game-leaderboard-title').value.trim() || DEFAULT_GAMIFICATION.leaderboardTitle;
+            gamification.leaderboardSubtitle = document.getElementById('game-leaderboard-subtitle').value.trim() || DEFAULT_GAMIFICATION.leaderboardSubtitle;
+            gamification.defaultPoints = Math.max(0, parseInt(document.getElementById('game-default-points').value || DEFAULT_GAMIFICATION.defaultPoints, 10));
+            gamification.streaksEnabled = document.getElementById('game-streaks').checked;
+            gamification.badgesEnabled = document.getElementById('game-badges').checked;
+            gamification.podiumEnabled = document.getElementById('game-podium').checked;
+            gamification.recentActivityEnabled = document.getElementById('game-recent').checked;
+            gamification.podiumGold = document.getElementById('game-gold').value;
+            gamification.podiumSilver = document.getElementById('game-silver').value;
+            gamification.podiumBronze = document.getElementById('game-bronze').value;
+            gamification.badgeColor = document.getElementById('game-badge').value;
+            collectGamificationBadges();
+
+            const firebaseRaw = document.getElementById('firebase-config')?.value.trim();
+            if (firebaseRaw) {
+                try { firebaseConfig = JSON.parse(firebaseRaw); }
+                catch (e) { alert('Firebase config JSON is invalid. The other admin changes will still be saved.'); }
+            }
+            saveState();
+            applyThemeColors();
+            renderBoardGrid();
+            updatePawnVisual();
+            updateUI();
+            closeAdminPortal();
+            alert("Admin settings saved successfully!");
+        }
+
+        window.onresize = function() {
+            updatePawnPosition(currentPos);
+        };
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Office Wellbeing Board Game</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        
+        :root {
+            --header-bg-start: #0f766e;
+            --header-bg-end: #047857;
+            --board-bg: #e2e8f0;
+            --tile-bg: #ffffff;
+            --tile-text: #1e293b;
+            --accent-btn: #059669;
+            --accent-btn-hover: #047857;
+            --modal-bg: #ffffff;
+            --modal-text: #0f172a;
+            --muted-text: #64748b;
+            --panel-bg: #ffffff;
+            --panel-soft: #f8fafc;
+            --border-color: #e2e8f0;
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #e11d48;
+            --overlay: rgba(15,23,42,.60);
+            --center-bg: #f8fafc;
+            --input-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            user-select: none;
+            color: var(--modal-text);
+            background-color: var(--page-bg, #f1f5f9) !important;
+        }
+        .custom-panel-bg { background-color: var(--panel-bg) !important; }
+        .custom-panel-soft { background-color: var(--panel-soft) !important; }
+        .custom-border { border-color: var(--border-color) !important; }
+        .custom-muted { color: var(--muted-text) !important; }
+        .custom-success { background-color: var(--success) !important; }
+        .custom-warning { background-color: var(--warning) !important; }
+        .custom-danger { background-color: var(--danger) !important; }
+        .custom-center-bg { background: var(--center-bg) !important; }
+        .custom-input { background-color: var(--input-bg) !important; color: var(--modal-text) !important; }
+        .custom-overlay { background-color: var(--overlay) !important; }
+
+        .custom-header {
+            background: linear-gradient(135deg, var(--header-bg-start), var(--header-bg-end)) !important;
+        }
+
+        .custom-board-bg {
+            background-color: var(--board-bg) !important;
+        }
+
+        .custom-tile-bg {
+            background-color: var(--tile-bg) !important;
+            color: var(--tile-text) !important;
+        }
+
+        .custom-accent-btn {
+            background-color: var(--accent-btn) !important;
+        }
+
+        .custom-tile-accent {
+            color: var(--tile-accent) !important;
+        }
+        .custom-accent-btn:hover {
+            background-color: var(--accent-btn-hover) !important;
+        }
+
+        .custom-modal-bg {
+            background-color: var(--modal-bg) !important;
+            color: var(--modal-text) !important;
+        }
+
+        .board-grid {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            grid-template-rows: repeat(5, minmax(0, 1fr));
+        }
+
+        .pawn-transition {
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body id="app-body" class="bg-slate-100 min-h-screen flex flex-col justify-between">
+
+    <!-- MAIN HEADER -->
+    <header id="app-header" class="custom-header text-white shadow-lg px-6 py-4 flex flex-wrap justify-between items-center gap-4 transition-all duration-300">
+        <div class="flex items-center gap-3">
+            <div class="bg-white/20 p-2.5 rounded-xl backdrop-blur-md text-2xl">
+                <i class="fa-solid fa-dice-d20"></i>
+            </div>
+            <div>
+                <h1 id="header-title-text" class="text-xl font-extrabold tracking-tight">Office Wellbeing Trail</h1>
+                <p id="header-subtitle-text" class="text-xs text-emerald-100 opacity-90">Daily breaks for health, focus & team energy</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <button onclick="openLeaderboardModal()" class="px-4 py-2 bg-white/15 hover:bg-white/25 active:scale-95 rounded-xl font-semibold text-sm transition flex items-center gap-2 border border-white/20 shadow-sm">
+                <i class="fa-solid fa-trophy"></i> Leaderboard
+            </button>
+            <button onclick="openResourcesModal()" class="px-4 py-2 bg-white/15 hover:bg-white/25 active:scale-95 rounded-xl font-semibold text-sm transition flex items-center gap-2 border border-white/20 shadow-sm">
+                <i class="fa-solid fa-book-medical"></i> Resources
+            </button>
+            <button onclick="openAdminPinModal()" class="px-4 py-2 bg-white/15 hover:bg-white/25 active:scale-95 rounded-xl font-semibold text-sm transition flex items-center gap-2 border border-white/20 shadow-sm">
+                <i class="fa-solid fa-sliders"></i> Admin Portal
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN GAME LAYOUT -->
+    <main class="max-w-7xl w-full mx-auto p-4 md:p-6 flex-1 flex flex-col lg:flex-row gap-6 items-start">
+        
+        <!-- GAME BOARD CONTAINER -->
+        <section class="flex-1 w-full flex flex-col items-center gap-4">
+            
+            <div id="board-container" class="relative w-full max-w-[620px] aspect-square custom-board-bg p-3 md:p-4 rounded-3xl shadow-xl border border-slate-300/80">
+                
+                <!-- PLAYER PAWN TOKEN -->
+                <div id="player-pawn" title="Your player piece" class="absolute w-9 h-9 md:w-11 md:h-11 bg-gradient-to-tr from-amber-500 to-orange-400 border-2 border-white rounded-full shadow-2xl z-30 pawn-transition flex items-center justify-center text-white font-black text-xs md:text-sm drop-shadow-md overflow-hidden">
+                    <i id="player-pawn-icon" class="fa-solid fa-user-ninja"></i>
+                    <img id="player-pawn-image" src="" alt="Player" class="hidden absolute inset-0 w-full h-full object-cover">
+                </div>
+
+                <!-- 16 PERIMETER TILES GRID (5x5 Grid) -->
+                <div id="board-grid" class="board-grid w-full h-full gap-2">
+                    <!-- Top Row (Indices 0..4) -->
+                    <div id="tile-0" class="relative custom-tile-bg border-2 border-amber-300 rounded-2xl p-1.5 flex flex-col justify-between items-center text-center shadow-sm overflow-hidden"></div>
+                    <div id="tile-1" class="relative custom-tile-bg border border-slate-200 rounded-2xl p-1.5 flex flex-col justify-between items-center text-center shadow-sm overflow-hidden"></div>
+                    <div id="tile-2" class="relative custom-tile-bg border border-slate-200 rounded-2xl p-1.5 flex flex-col justify-between items-center text-center shadow-sm overflow-hidden"></div>
+                    <div id="tile-3" class="relative custom-tile-bg border border-slate-200 rounded-2xl p-1.5 flex flex-col justify-between items-center text-center shadow-sm overflow-hidden"></div>
+                    <div id="tile-4" class="relative custom-tile-bg border-2 border-amber-300 rounded-2xl p-1.5 flex flex-col justify-between items-center text-center shadow-sm overflow-hidden"></div>
+
+                    <!-- Right Column (Indices 5..7) -->
+                    <div id="tile-15" class="relative custom-tile-bg border border-slate-200 rounded-2xl p-1.5 flex flex-col justify-between items-center text-center shadow-sm overflow-hidden" style="grid-column: 1; grid-row: 2;"></div>
+                    <div id="tile-5" class="relative custom-tile-bg border border-slate-200 rounded-2xl p-1.5 flex flex-col justify-between items-center text-center shadow-sm overflow-hidden" style="grid-column: 5; grid-row: 2;"></div>
+
+                    <div id="tile-14" class="relative custom-tile-bg border border-slate-200 rounded-2xl p-1.5 flex flex-col justify-between items-center text-center shadow-sm overflow-hidden" style="grid-column: 1; grid-row: 3;"></div>
+                    <div id="tile-6" class="relative custom-tile-bg border border-slate-200 rounded-2xl p-1.5 flex flex-col justify-between items-center text-center shadow-sm overflow-hidden" style="grid-column: 5; grid-row: 3;"></div>
+
+                    <div id="tile-13" class="relative custom-tile-bg border border-slate-200 rounded-2xl p-1.5 flex flex-col justify-between items-center text-center shadow-sm overflow-hidden" style="grid-column: 1; grid-row: 4;"></div>
+                    <div id="tile-7" class="relative custom-tile-bg border border-slate-200 rounded-2xl p-1.5 flex flex-col justify-between items-center text-center shadow-sm overflow-hidden" style="grid-column: 5; grid-row: 4;"></div>
+
+                    <!-- Bottom Row (Indices 8..12) -->
+                    <div id="tile-12" class="relative custom-tile-bg border-2 border-amber-300 rounded-2xl p-1.5 flex flex-col justify-between items-center text-center shadow-sm overflow-hidden" style="grid-column: 1; grid-row: 5;"></div>
+                    <div id="tile-11" class="relative custom-tile-bg border border-slate-200 rounded-2xl p-1.5 flex flex-col justify-between items-center text-center shadow-sm overflow-hidden" style="grid-column: 2; grid-row: 5;"></div>
+                    <div id="tile-10" class="relative custom-tile-bg border border-slate-200 rounded-2xl p-1.5 flex flex-col justify-between items-center text-center shadow-sm overflow-hidden" style="grid-column: 3; grid-row: 5;"></div>
+                    <div id="tile-9" class="relative custom-tile-bg border border-slate-200 rounded-2xl p-1.5 flex flex-col justify-between items-center text-center shadow-sm overflow-hidden" style="grid-column: 4; grid-row: 5;"></div>
+                    <div id="tile-8" class="relative custom-tile-bg border-2 border-amber-300 rounded-2xl p-1.5 flex flex-col justify-between items-center text-center shadow-sm overflow-hidden" style="grid-column: 5; grid-row: 5;"></div>
+
+                    <!-- CENTER BOARD HUB -->
+                    <div class="col-start-2 col-end-5 row-start-2 row-end-5 bg-gradient-to-br from-white via-slate-50 to-slate-100 rounded-2xl shadow-inner border border-slate-200 p-4 flex flex-col items-center justify-center text-center gap-3">
+                        <div id="dice-container" class="w-20 h-20 md:w-24 md:h-24 bg-white rounded-2xl shadow-md border-2 border-slate-200 flex items-center justify-center text-4xl md:text-5xl text-teal-700 font-extrabold transition-transform duration-200">
+                            <i class="fa-solid fa-dice-three"></i>
+                        </div>
+                        <div>
+                            <p id="dice-status" class="text-xs md:text-sm font-semibold text-slate-600">Roll the dice to land on a break tile!</p>
+                        </div>
+                        <button id="roll-btn" onclick="rollDice()" class="w-full max-w-[200px] py-3 px-6 custom-accent-btn text-white font-bold rounded-xl shadow-lg hover:shadow-xl active:scale-95 transition flex items-center justify-center gap-2 text-base">
+                            <i class="fa-solid fa-dice"></i> Roll Dice
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SIDEBAR ACTIVITY FEED -->
+        <aside class="w-full lg:w-96 bg-white rounded-3xl p-5 shadow-xl border border-slate-200 flex flex-col gap-5">
+            
+            <div class="flex justify-between items-center pb-3 border-b border-slate-100">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-800">Activity Tracker</h2>
+                    <p class="text-xs text-slate-500">Player: <strong id="player-name-display" class="text-teal-700">Coworker</strong> 
+                        <button onclick="openProfileModal()" class="text-slate-400 hover:text-teal-600 ml-1" title="Edit profile"><i class="fa-solid fa-user-pen"></i></button>
+                    </p>
+                </div>
+                <button onclick="openSummaryModal()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-trophy text-amber-500"></i> Summary
+                </button>
+            </div>
+
+            <!-- STAT CARDS -->
+            <div class="grid grid-cols-2 gap-3">
+                <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-3.5 flex flex-col gap-1">
+                    <span class="text-xs font-bold text-emerald-800 uppercase tracking-wider">Rolls Left Today</span>
+                    <span id="rolls-count-display" class="text-2xl font-black text-emerald-700">3 / 3</span>
+                </div>
+                <div class="bg-teal-50 border border-teal-100 rounded-2xl p-3.5 flex flex-col gap-1">
+                    <span class="text-xs font-bold text-teal-800 uppercase tracking-wider">Completed</span>
+                    <span id="completed-count-display" class="text-2xl font-black text-teal-700">0</span>
+                </div>
+            </div>
+
+            <!-- LOG FEED -->
+            <div class="flex-1 flex flex-col gap-3">
+                <h3 class="text-xs font-extrabold text-slate-400 uppercase tracking-wider">Completed Breaks</h3>
+                <div id="activity-log-feed" class="flex flex-col gap-2.5 max-h-[380px] overflow-y-auto pr-1">
+                    <!-- Dynamic Log Cards -->
+                </div>
+            </div>
+
+        </aside>
+
+    </main>
+
+    <!-- SECRET MISSION MODAL -->
+    <div id="mission-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[9999] hidden items-center justify-center p-4">
+        <div class="custom-modal-bg rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-100 flex flex-col gap-4 animate-in fade-in zoom-in duration-200">
+            <div class="flex justify-between items-start gap-2">
+                <div>
+                    <span id="modal-tile-category" class="px-2.5 py-1 bg-teal-100 text-teal-800 text-[11px] font-extrabold rounded-md uppercase tracking-wider">Mindfulness</span>
+                    <h3 id="modal-tile-title" class="text-xl font-black mt-1">Desk Stretch</h3>
+                </div>
+                <div id="modal-tile-icon" class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center text-2xl overflow-hidden shrink-0">
+                    <i class="fa-solid fa-child-reaching"></i>
+                </div>
+            </div>
+
+            <!-- Tile Image Preview in Modal -->
+            <div id="modal-tile-image-container" class="w-full h-44 rounded-2xl overflow-hidden hidden bg-slate-100 border border-slate-200">
+                <img id="modal-tile-image" src="" alt="Tile Image" class="w-full h-full object-cover">
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 text-slate-700 text-sm leading-relaxed">
+                <p id="modal-tile-desc">Stand up and perform a 30-second shoulder and back stretch to relieve desk strain.</p>
+            </div>
+
+            <div class="flex gap-3 mt-2">
+                <button onclick="closeMissionModal(false)" class="flex-1 py-3 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-sm transition">
+                    Do Later / Skip
+                </button>
+                <button onclick="closeMissionModal(true)" class="flex-1 py-3 px-4 custom-accent-btn text-white font-bold rounded-xl text-sm shadow-lg hover:shadow-xl transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-check"></i> Mark Completed
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PLAYER PROFILE MODAL -->
+    <div id="profile-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[9999] hidden items-center justify-center p-4">
+        <div class="custom-modal-bg rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 flex flex-col gap-4">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h3 class="text-lg font-extrabold">Your Player Profile</h3>
+                    <p class="text-xs text-slate-500 mt-1">Your photo will be used as your piece on the board.</p>
+                </div>
+                <button onclick="closeProfileModal()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="flex flex-col items-center gap-3">
+                <div class="w-28 h-28 rounded-full overflow-hidden border-4 border-white shadow-xl bg-gradient-to-tr from-amber-500 to-orange-400 flex items-center justify-center">
+                    <img id="profile-preview-image" src="" alt="Profile preview" class="hidden w-full h-full object-cover">
+                    <i id="profile-preview-icon" class="fa-solid fa-user text-white text-4xl"></i>
+                </div>
+
+                <label class="w-full py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-sm transition text-center cursor-pointer">
+                    <i class="fa-solid fa-camera mr-1"></i> Choose Profile Photo
+                    <input id="profile-photo-input" type="file" accept="image/*" class="hidden" onchange="handleProfilePhotoUpload(event)">
+                </label>
+
+                <button onclick="removeProfilePhoto()" class="text-xs font-bold text-rose-600 hover:text-rose-700">
+                    Remove photo
+                </button>
+            </div>
+
+            <div>
+                <label class="text-[11px] font-bold text-slate-600">Display Name</label>
+                <input type="text" id="profile-name-input" class="w-full mt-1 p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Your name">
+            </div>
+
+            <button onclick="saveProfile()" class="w-full py-3 custom-accent-btn text-white font-bold rounded-xl text-sm shadow-md transition">
+                Save Profile
+            </button>
+        </div>
+    </div>
+
+    <!-- RESOURCES MODAL -->
+    <div id="resources-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[9999] hidden items-center justify-center p-4">
+        <div class="custom-modal-bg rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 flex flex-col gap-4 max-h-[85vh]">
+            <div class="flex justify-between items-start border-b border-slate-100 pb-3">
+                <div>
+                    <h3 id="resources-modal-title" class="text-lg font-extrabold">Wellbeing Support Hub</h3>
+                    <p id="resources-modal-subtitle" class="text-xs text-slate-500">Internal company contacts, guidance, and support resources.</p>
+                </div>
+                <button onclick="closeResourcesModal()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div id="resources-cards-container" class="flex flex-col gap-3 overflow-y-auto pr-1 flex-1">
+                <!-- Dynamic Resource Items -->
+            </div>
+
+            <div class="pt-2 border-t border-slate-100 flex justify-end">
+                <button onclick="closeResourcesModal()" class="py-2.5 px-5 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold rounded-xl text-sm transition">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WEEKLY SUMMARY MODAL -->
+    <div id="summary-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[9999] hidden items-center justify-center p-4">
+        <div class="custom-modal-bg rounded-3xl max-w-sm w-full p-6 shadow-2xl text-center flex flex-col items-center gap-4">
+            <div class="w-16 h-16 bg-amber-100 text-amber-500 rounded-2xl flex items-center justify-center text-3xl">
+                <i class="fa-solid fa-award"></i>
+            </div>
+            <div>
+                <h3 class="text-xl font-black">Weekly Progress</h3>
+                <p class="text-xs text-slate-500 mt-0.5">Your total wellbeing breaks taken</p>
+            </div>
+
+            <div class="w-full bg-emerald-50 border border-emerald-100 rounded-2xl p-4 my-1">
+                <span id="summary-total-num" class="text-4xl font-black text-emerald-600">0</span>
+                <p class="text-xs font-bold text-emerald-800 mt-1 uppercase tracking-wider">Completed Missions</p>
+            </div>
+
+            <button onclick="closeSummaryModal()" class="w-full py-3 custom-accent-btn text-white font-bold rounded-xl text-sm shadow-md transition">
+                Keep Up The Good Work!
+            </button>
+        </div>
+    </div>
+
+    <!-- ADMIN PIN MODAL -->
+    <div id="leaderboard-modal" class="fixed inset-0 custom-overlay backdrop-blur-sm z-[9999] hidden items-center justify-center p-4">
+        <div class="custom-modal-bg w-full max-w-3xl rounded-3xl shadow-2xl border custom-border overflow-hidden">
+            <div class="p-5 border-b custom-border flex justify-between items-center">
+                <div><h3 class="text-lg font-extrabold">Team Leaderboard</h3><p class="text-xs custom-muted">Celebrate progress, streaks and completed wellbeing challenges.</p></div>
+                <button onclick="closeLeaderboardModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-5 space-y-4">
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="setLeaderboardPeriod('all')" id="lb-filter-all" class="px-3 py-1.5 rounded-full text-xs font-black custom-accent-btn text-white">All time</button>
+                    <button onclick="setLeaderboardPeriod('week')" id="lb-filter-week" class="px-3 py-1.5 rounded-full text-xs font-black bg-slate-100 text-slate-600">This week</button>
+                    <button onclick="setLeaderboardPeriod('month')" id="lb-filter-month" class="px-3 py-1.5 rounded-full text-xs font-black bg-slate-100 text-slate-600">This month</button>
+                </div>
+                <div id="leaderboard-podium" class="grid grid-cols-1 sm:grid-cols-3 gap-3"></div>
+                <div id="leaderboard-list" class="flex flex-col gap-2 max-h-[38vh] overflow-y-auto"></div>
+                <div>
+                    <h4 class="text-xs font-black uppercase tracking-widest custom-muted mb-2">Recent team activity</h4>
+                    <div id="leaderboard-recent" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
+                </div>
+                <p id="leaderboard-status" class="text-[10px] custom-muted text-center"></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="admin-pin-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[9999] hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-xs w-full p-6 shadow-2xl flex flex-col gap-4 text-center">
+            <div class="w-12 h-12 bg-slate-100 text-slate-700 rounded-2xl mx-auto flex items-center justify-center text-xl">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <div>
+                <h3 class="text-base font-extrabold text-slate-800">Admin Portal Access</h3>
+                <p class="text-xs text-slate-500 mt-1">Enter PIN (Default: 1234)</p>
+            </div>
+
+            <div>
+                <input type="password" id="admin-pin-input" placeholder="••••" class="w-full text-center py-2.5 px-3 bg-slate-50 border border-slate-300 rounded-xl text-lg font-bold tracking-widest focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                <p id="admin-pin-error" class="text-xs text-rose-500 font-bold mt-1.5 hidden">Incorrect PIN!</p>
+            </div>
+
+            <div class="flex gap-2">
+                <button onclick="closeAdminPinModal()" class="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs transition">Cancel</button>
+                <button onclick="verifyAdminPin()" class="flex-1 py-2.5 custom-accent-btn text-white font-bold rounded-xl text-xs shadow-md transition">Login</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN PORTAL DASHBOARD MODAL -->
+    <div id="admin-portal-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[9999] hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-4xl w-full p-6 shadow-2xl border border-slate-100 flex flex-col gap-4 max-h-[90vh]">
+            
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center text-slate-700">
+                        <i class="fa-solid fa-gears"></i>
+                    </div>
+                    <h3 class="text-lg font-black text-slate-800">Manager Admin Portal</h3>
+                </div>
+                <button onclick="closeAdminPortal()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- ADMIN NAVIGATION TABS -->
+            <div class="flex gap-2 border-b border-slate-200 pb-2 overflow-x-auto">
+                <button id="admin-tab-btn-1" onclick="switchAdminTab(1)" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-teal-50 text-teal-700 border border-teal-200 whitespace-nowrap">
+                    <i class="fa-solid fa-chart-line"></i> Team Reports
+                </button>
+                <button id="admin-tab-btn-2" onclick="switchAdminTab(2)" class="px-3 py-1.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 whitespace-nowrap">
+                    <i class="fa-solid fa-palette"></i> Theme & Colors
+                </button>
+                <button id="admin-tab-btn-3" onclick="switchAdminTab(3)" class="px-3 py-1.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 whitespace-nowrap">
+                    <i class="fa-solid fa-dice"></i> User Rolls
+                </button>
+                <button id="admin-tab-btn-4" onclick="switchAdminTab(4)" class="px-3 py-1.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 whitespace-nowrap">
+                    <i class="fa-solid fa-cubes"></i> Board Tiles & Images
+                </button>
+                <button id="admin-tab-btn-5" onclick="switchAdminTab(5)" class="px-3 py-1.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 whitespace-nowrap">
+                    <i class="fa-solid fa-book-bookmark"></i> Resources Hub
+                </button>
+                <button id="admin-tab-btn-6" onclick="switchAdminTab(6)" class="px-3 py-1.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 whitespace-nowrap">
+                    <i class="fa-solid fa-code"></i> Raw Config
+                </button>
+                <button id="admin-tab-btn-7" onclick="switchAdminTab(7)" class="px-3 py-1.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 whitespace-nowrap"><i class="fa-solid fa-cloud"></i> Team Sync</button>
             </div>
 
             <!-- TAB 1: TEAM REPORTS & CSV LOGS -->
